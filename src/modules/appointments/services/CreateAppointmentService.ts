@@ -1,23 +1,23 @@
 import { startOfHour } from 'date-fns'
-import { getCustomRepository } from 'typeorm'
 
 import AppError from '@shared/errors/AppError';
 
 import Appointment from '../infra/typeorm/entities/Appointment';
-import AppointmentRepository from '../infra/typeorm/repositories/AppointmentsRepository';
+import IAppointmentRepository from '@modules/appointments/infra/typeorm/repositories/AppointmentsRepository';
 
-interface Request {
+interface IRequest {
   provider_id: string,
   date: Date
 }
 
 class CreateAppointmentService {
-  public async execute({ provider_id, date }: Request): Promise<Appointment> {
-    const appointmentRepository = getCustomRepository(AppointmentRepository);
+  constructor(private appointmentRepository: IAppointmentRepository) {}
+
+  public async execute({ provider_id, date }: IRequest): Promise<Appointment> {
 
     const appointmentDate = startOfHour(date);
 
-    const findAppointmentInSameHour = await appointmentRepository.findByDate(appointmentDate);
+    const findAppointmentInSameHour = await this.appointmentRepository.findByDate(appointmentDate);
 
     console.log(findAppointmentInSameHour);
 
@@ -25,7 +25,7 @@ class CreateAppointmentService {
       throw new AppError('Cannot book an appointment on this date!');
     }
 
-    const appointment = await appointmentRepository.create({
+    const appointment = await this.appointmentRepository.create({
       provider_id,
       date: appointmentDate
     });
