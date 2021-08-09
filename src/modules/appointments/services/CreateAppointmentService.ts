@@ -25,12 +25,10 @@ class CreateAppointmentService {
       throw new AppError('Cannot book an appointment on this date!');
     }
 
-    const appointment = appointmentRepository.create({
+    const appointment = await appointmentRepository.create({
       provider_id,
       date: appointmentDate
     });
-
-    await appointmentRepository.save(appointment);
 
     return appointment;
   }
