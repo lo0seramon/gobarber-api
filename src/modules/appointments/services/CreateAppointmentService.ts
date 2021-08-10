@@ -4,7 +4,7 @@ import {injectable, inject} from 'tsyringe';
 import AppError from '@shared/errors/AppError';
 
 import Appointment from '../infra/typeorm/entities/Appointment';
-import IAppointmentRepository from '@modules/appointments/infra/typeorm/repositories/AppointmentsRepository';
+import IAppoinitmentsRepository from '../repositories/IAppointmentsRepository';
 
 interface IRequest {
   provider_id: string,
@@ -15,7 +15,7 @@ interface IRequest {
 class CreateAppointmentService {
   constructor(
     @inject('AppointmentsRepository')
-    private appointmentRepository: IAppointmentRepository
+    private appointmentRepository: IAppoinitmentsRepository
   ) {}
 
   public async execute({ provider_id, date }: IRequest): Promise<Appointment> {
