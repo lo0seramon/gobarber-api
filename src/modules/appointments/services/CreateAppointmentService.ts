@@ -24,8 +24,6 @@ class CreateAppointmentService {
 
     const findAppointmentInSameHour = await this.appointmentRepository.findByDate(appointmentDate);
 
-    console.log(findAppointmentInSameHour);
-
     if(findAppointmentInSameHour) {
       throw new AppError('Cannot book an appointment on this date!');
     }
