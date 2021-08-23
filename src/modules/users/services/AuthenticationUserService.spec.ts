@@ -40,11 +40,11 @@ describe('AuthenticationUser', () => {
         fakeHashProvider
        );
 
-       expect(
+       await expect(
         authenticateUser.execute({
-        email: "fulano@silva@gmail.com",
+        email: "fulanosilva@example.com",
         password: "123456"
-      })).toBeInstanceOf(AppError);
+      })).rejects.toBeInstanceOf(AppError);
    });
 
    it('should not be able to authenticate with unexisting password', async () => {
@@ -63,11 +63,11 @@ describe('AuthenticationUser', () => {
             password: "123456"
         });
 
-        expect(
-          await authenticateUser.execute({
+        await expect(
+          authenticateUser.execute({
             email: "fulano@silva@gmail.com",
             password: "654321"
           })
-        ).toBeInstanceOf(AppError);
+        ).rejects.toBeInstanceOf(AppError);
   });
 });
